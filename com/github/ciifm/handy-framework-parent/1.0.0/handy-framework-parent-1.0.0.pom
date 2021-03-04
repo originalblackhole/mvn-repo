@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.github.ciifm</groupId>
+  <artifactId>handy-framework-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0</version>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.1.1.RELEASE</version>
+    <relativePath/>
+  </parent>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <github.global.server>github</github.global.server>
+  </properties>
+
+  <modules>
+    <module>handy-framework-core</module>
+    <module>handy-framework-model</module>
+    <module>handy-framework-web</module>
+    <module>handy-framework-jdbc</module>
+    <module>handy-framework-service</module>
+    <module>handy-framework-util</module>
+  </modules>
+
+  <repositories>
+    <repository>
+      <id>mvn-repo</id>
+      <url>https://raw.github.com/originalblackhole/mvn-repo/master</url>
+      <snapshots>
+          <enabled>true</enabled>
+          <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <!--Spring Boot Web组件-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <!--Spring Boot 测试组件-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.originalblackhole</groupId>
+      <artifactId>blackhole-dm</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
+  </dependencies>
+
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>mvn-repo-handy</name>
+      <!--<url> file://${project.build.directory}/mvn-repo </url>-->
+      <url> file://${project.build.directory}/mvn-repo/repository/</url>
+    </repository>
+  </distributionManagement>
+
+  <!--<build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <configuration>
+            <classifier>exec</classifier>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+            <encoding>UTF-8</encoding>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>-->
+
+  <build>
+    <plugins>
+      <!--打包插件-->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <!--<version>2.8.1</version>-->
+        <configuration>
+          <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+        </configuration>
+      </plugin>
+
+      <!--源码-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.2.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--github上传插件,用于修改后的发布,执行 mvn clean deploy 自动打包上传到github-->
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version >0.12</version>
+        <configuration>
+          <message >1.0.0版本</message>
+          <noJekyll>true</noJekyll>
+          <!--本地jar地址-->
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+          <!--分支-->
+          <branch>refs/heads/master</branch>
+          <merge>true</merge>
+          <server>github</server>
+
+
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <!--对应github上创建的仓库名称 name-->
+          <repositoryName>mvn-repo</repositoryName>
+          <!--github 仓库所有者 不是账号-->
+          <repositoryOwner>originalblackhole</repositoryOwner>
+        </configuration>
+
+        <executions>
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+
+    </plugins>
+  </build>
+</project>
