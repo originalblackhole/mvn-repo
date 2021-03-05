@@ -11,7 +11,7 @@
     <groupId>com.github.originalblackhole</groupId>
     <artifactId>dm</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <!--<packaging>jar</packaging>-->
 
     <properties>
         <java.version>1.8</java.version>
