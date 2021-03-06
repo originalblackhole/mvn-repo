@@ -15,7 +15,7 @@
    <password>此处填写上面生成的token</password>
 </server>
 ```
-4.源码配置文件看[dm](https://github.com/originalblackhole/dm/blob/master/pom.xml "dm")  父子模块源码配置看[handy-starer](https://github.com/originalblackhole/handy-starter/blob/main/pom.xml "handy-starer")
+4.单项目源码配置文件看[dm](https://github.com/originalblackhole/dm/blob/master/pom.xml "dm")  父子模块源码配置看[handy-starer](https://github.com/originalblackhole/handy-starter/blob/main/pom.xml "handy-starer")
 
 5.源码上传github
 
